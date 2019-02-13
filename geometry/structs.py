@@ -36,7 +36,7 @@ class Point:
     def __mul__(self, a_0: float):
         """
         Enlargement
-        :param other:
+        :param a_0 : Enlargement Factor
         :return:
         """
         return Point(self.x * a_0, self.y * a_0)
@@ -44,7 +44,7 @@ class Point:
     def __truediv__(self, a_0: float):
         """
         Reduction
-        :param other: Reduction Factor
+        :param a_0: Reduction Factor
         :return: Point
         """
         res: Optional[Point] = None

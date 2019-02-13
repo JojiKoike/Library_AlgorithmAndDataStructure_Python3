@@ -19,6 +19,12 @@ class GeometryStructsTestCase(unittest.TestCase):
                 point: Point = Point(i * 1.0, j * 1.0)
                 self.assertEqual(point.x, i * 1.0)
                 self.assertEqual(point.y, j * 1.0)
+                if i == -1:
+                    self.assertEqual(point < Point(0, 0), True)
+                elif i == 0:
+                    self.assertEqual(point < Point(0, 0), True if j == -1 else False)
+                else:
+                    self.assertEqual(point < Point(0, 0), False)
 
     def test_defined_vector_correctly(self) -> None:
         v_1: Vector = Vector(1.0, 2.0)
