@@ -2,17 +2,59 @@
 Data Structure Definitions Module
 """
 from dataclasses import dataclass
+from typing import List, Optional
 import math
-from .common import EPS
+import sys
+import traceback
+from geometry.common import EPS
 
 
-@dataclass
 class Point:
     """
     Point in x-y plane
     """
-    x: float
-    y: float
+    def __init__(self, x_0: float, y_0: float):
+        self.x = x_0
+        self.y = y_0
+
+    def __add__(self, other):
+        """
+        Add Calculation Definition
+        :param other: Add Operand Point
+        :return: Point
+        """
+        return Point(self.x + other.x, self.y + other.y)
+
+    def __sub__(self, other):
+        """
+        Subs. Calculation Definition
+        :param other: Subs. Operand Point
+        :return: Point
+        """
+        return Point(self.x - other.x, self.y - other.y)
+
+    def __mul__(self, a_0: float):
+        """
+        Enlargement
+        :param other:
+        :return:
+        """
+        return Point(self.x * a_0, self.y * a_0)
+
+    def __truediv__(self, a_0: float):
+        """
+        Reduction
+        :param other: Reduction Factor
+        :return: Point
+        """
+        res: Optional[Point] = None
+        try:
+            res = Point(self.x / a_0, self.y / a_0)
+        except ZeroDivisionError as e_0:
+            print("ERROR :  Zero Division!!!")
+            print(e_0)
+            sys.stderr.write(traceback.format_exc())
+        return res
 
     def abs(self) -> float:
         """
@@ -42,8 +84,28 @@ class Point:
         :param other: Other Point
         :return: Equality Calculation Result
         """
-        return math.fabs(self.x - other.x) < EPS and math.fabs(self.y - other.y) < EPS
+        return abs(self.x - other.x) < EPS and abs(self.y - other.y) < EPS
 
+
+class Vector(Point):
+    """
+    Vector in x-y plane
+    """
+    def dot(self, other):
+        """
+        Calculate Vector dot product
+        :param other: Vector
+        :return: Dot Product Result
+        """
+        return self.x * other.x + self.y * other.y
+
+    def cross(self, other):
+        """
+        Calculate Vector cross product
+        :param other: Vector
+        :return: Cross Product Result
+        """
+        return self.x * other.y - other.x * self.y
 
 
 @dataclass
@@ -53,6 +115,14 @@ class Segment:
     """
     p1: Point
     p2: Point
+
+
+@dataclass
+class Polygon:
+    """
+    Polygon in x-y plane
+    """
+    p_i: List[Point]
 
 
 @dataclass

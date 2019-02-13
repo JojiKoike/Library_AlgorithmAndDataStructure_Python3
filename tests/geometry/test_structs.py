@@ -2,7 +2,7 @@
 Geometry Data Structure Definition Tests Module
 """
 import unittest
-from geometry.structs import Point, Segment, Circle
+from geometry.structs import Point, Vector, Segment, Circle
 
 
 class GeometryStructsTestCase(unittest.TestCase):
@@ -19,6 +19,24 @@ class GeometryStructsTestCase(unittest.TestCase):
                 point: Point = Point(i * 1.0, j * 1.0)
                 self.assertEqual(point.x, i * 1.0)
                 self.assertEqual(point.y, j * 1.0)
+
+    def test_defined_vector_correctly(self) -> None:
+        v_1: Vector = Vector(1.0, 2.0)
+        v_2: Vector = Vector(3.0, 4.0)
+        self.assertEqual(v_1.x, 1.0)
+        self.assertEqual(v_1.y, 2.0)
+        self.assertEqual(v_1.dot(v_2), 11.0)
+        self.assertEqual(v_1.cross(v_2), -2.0)
+        self.assertEqual((v_1 + v_2).x, 4.0)
+        self.assertEqual((v_1 + v_2).y, 6.0)
+        self.assertEqual((v_1 - v_2).x, -2.0)
+        self.assertEqual((v_1 - v_2).y, -2.0)
+        self.assertEqual((v_1 * 2.0).x, 2.0)
+        self.assertEqual((v_1 * 2.0).y, 4.0)
+        self.assertEqual((v_1 / 2.0).x, 0.5)
+        self.assertEqual((v_1 / 2.0).y, 1.0)
+        self.assertEqual(v_1 == v_2, False)
+        self.assertEqual(v_1 == Vector(1.0, 2.0), True)
 
     def test_defined_segment_correctly(self) -> None:
         """
