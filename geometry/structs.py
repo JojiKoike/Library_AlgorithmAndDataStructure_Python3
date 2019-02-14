@@ -91,7 +91,7 @@ class Vector(Point):
     """
     Vector in x-y plane
     """
-    def dot(self, other):
+    def dot(self, other) -> float:
         """
         Calculate Vector dot product
         :param other: Vector
@@ -99,7 +99,7 @@ class Vector(Point):
         """
         return self.x * other.x + self.y * other.y
 
-    def cross(self, other):
+    def cross(self, other) -> float:
         """
         Calculate Vector cross product
         :param other: Vector
