@@ -1,3 +1,6 @@
+"""
+Geometry Methods Module
+"""
 from typing import Optional
 from geometry.structs import Point, Vector, Segment
 from geometry.common import equals
