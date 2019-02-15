@@ -70,3 +70,16 @@ def is_parallel(*args) -> Optional[bool]:
     else:
         raise TypeError("Error: Argument Error")
     return equals(v_1.cross(v_2), 0.0)
+
+
+def project(s: Segment, p: Point) -> Point:
+    """
+    Calculate Point Projection on the Segment
+    :param s: Projection base segment
+    :param p: Projection Point
+    :return: Projected Coordinate Value
+    """
+    hypo: Vector = Vector(p.x - s.p1.x, p.y - s.p1.y)
+    base: Vector = Vector(s.p2.x - s.p1.x, s.p2.y - s.p1.y)
+    r: float = hypo.dot(base) / base.norm()
+    return s.p1 + base * r

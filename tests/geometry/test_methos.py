@@ -1,7 +1,8 @@
 import unittest
 
 from geometry.structs import Point, Vector, Segment
-from geometry.methods import is_orthogonal, is_parallel
+from geometry.methods import is_orthogonal, is_parallel, project
+from geometry.common import equals
 
 
 class GeometryMethodTestCase(unittest.TestCase):
@@ -36,6 +37,12 @@ class GeometryMethodTestCase(unittest.TestCase):
         s_1: Segment = Segment(p_1, p_2)
         s_2: Segment = Segment(p_3, p_4)
         self.assertEqual(is_parallel(s_1, s_2), True)
+
+    def test_project_normal(self):
+        seg: Segment = Segment(Point(0, 0), Point(3, 4))
+        p: Point = Point(2, 5)
+        self.assertEqual(equals(project(seg, p).x, 3.12), True)
+        self.assertEqual(equals(project(seg, p).y, 4.16), True)
 
 
 if __name__ == '__main__':
