@@ -83,3 +83,13 @@ def project(s: Segment, p: Point) -> Point:
     base: Vector = Vector(s.p2.x - s.p1.x, s.p2.y - s.p1.y)
     r: float = hypo.dot(base) / base.norm()
     return s.p1 + base * r
+
+
+def reflect(s: Segment, p: Point) -> Point:
+    """
+    Calculate Reflected Point Coordinate Value
+    :param s: Segment for Reflection Axis
+    :param p: Reflect Target Point
+    :return: Reflected Point Coordinate Value
+    """
+    return p + (project(s, p) - p) * 2.0

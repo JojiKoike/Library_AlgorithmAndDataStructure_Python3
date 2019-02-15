@@ -1,7 +1,7 @@
 import unittest
 
 from geometry.structs import Point, Vector, Segment
-from geometry.methods import is_orthogonal, is_parallel, project
+from geometry.methods import is_orthogonal, is_parallel, project, reflect
 from geometry.common import equals
 
 
@@ -43,6 +43,12 @@ class GeometryMethodTestCase(unittest.TestCase):
         p: Point = Point(2, 5)
         self.assertEqual(equals(project(seg, p).x, 3.12), True)
         self.assertEqual(equals(project(seg, p).y, 4.16), True)
+
+    def test_reflect_normal(self):
+        seg: Segment = Segment(Point(0, 0), Point(3, 4))
+        p: Point = Point(2, 5)
+        self.assertEqual(equals(reflect(seg, p).x, 4.24), True)
+        self.assertEqual(equals(reflect(seg, p).y, 3.32), True)
 
 
 if __name__ == '__main__':
