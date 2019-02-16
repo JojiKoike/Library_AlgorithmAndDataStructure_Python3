@@ -9,7 +9,7 @@ import traceback
 from geometry.common import EPS
 
 
-class Point:
+class Point(object):
     """
     Point in x-y plane
     """
@@ -108,13 +108,19 @@ class Vector(Point):
         return self.x * other.y - other.x * self.y
 
 
-@dataclass
-class Segment:
+class Segment(object):
     """
     Segment in x-y plane
     """
-    p1: Point
-    p2: Point
+    def __init__(self, p1: Point, p2: Point):
+        self.p1 = p1
+        self.p2 = p2
+
+
+class Line(Segment):
+    """
+    Line in x-y plane
+    """
 
 
 @dataclass

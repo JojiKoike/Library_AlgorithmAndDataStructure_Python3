@@ -1,7 +1,9 @@
 import unittest
-
-from geometry.structs import Point, Vector, Segment
-from geometry.methods import is_orthogonal, is_parallel, project, reflect
+import math
+from geometry.structs import Point, Vector, Segment, Line
+from geometry.methods import \
+    is_orthogonal, is_parallel, project, reflect, \
+    get_distance, get_distance_lp
 from geometry.common import equals
 
 
@@ -49,6 +51,16 @@ class GeometryMethodTestCase(unittest.TestCase):
         p: Point = Point(2, 5)
         self.assertEqual(equals(reflect(seg, p).x, 4.24), True)
         self.assertEqual(equals(reflect(seg, p).y, 3.32), True)
+
+    def test_get_distance_normal(self):
+        p_1: Point = Point(0, 0)
+        p_2: Point = Point(1, 1)
+        self.assertEqual(equals(get_distance(p_1, p_2), math.sqrt(2.0)), True)
+
+    def test_get_distance_lp_normal(self):
+        l: Line = Line(Point(0, 0), Point(1, 1))
+        p: Point = Point(0.5, 0)
+        self.assertEqual(equals(get_distance_lp(l, p), 0.5 / math.sqrt(2)), True)
 
 
 if __name__ == '__main__':

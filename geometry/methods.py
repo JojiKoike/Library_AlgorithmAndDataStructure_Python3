@@ -2,7 +2,7 @@
 Geometry Methods Module
 """
 from typing import Optional
-from geometry.structs import Point, Vector, Segment
+from geometry.structs import Point, Vector, Segment, Line
 from geometry.common import equals
 
 
@@ -93,3 +93,25 @@ def reflect(s: Segment, p: Point) -> Point:
     :return: Reflected Point Coordinate Value
     """
     return p + (project(s, p) - p) * 2.0
+
+
+def get_distance(a: Point, b: Point) -> float:
+    """
+    Calculate Distance between two points
+    :param a: One Point
+    :param b: The Other Point
+    :return: Distance Between provided two points
+    """
+    return (a - b).abs()
+
+
+def get_distance_lp(l: Line, p: Point) -> float:
+    """
+    Calculate Distance between point and line
+    :param l: Line
+    :param p: Point
+    :return: Distance between provided point and line
+    """
+    v_1: Vector = Vector(p.x - l.p1.x, p.y - l.p1.y)
+    v_2: Vector = Vector(l.p2.x - l.p1.x, l.p2.y - l.p1.y)
+    return abs(v_2.cross(v_1)) / v_2.abs()
