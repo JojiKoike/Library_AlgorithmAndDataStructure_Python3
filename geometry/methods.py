@@ -3,7 +3,7 @@ Geometry Methods Module
 """
 from typing import Optional
 from geometry.structs import Point, Vector, Segment, Line
-from geometry.common import equals, EPS
+from geometry.common import equals, PointRelativePosition, EPS
 
 
 def is_orthogonal(*args) -> Optional[bool]:
@@ -132,3 +132,25 @@ def get_distance_sp(s: Segment, p: Point) -> float:
     if v_2.dot(v_base) > 0:
         return (p - s.p2).abs()
     return get_distance_lp(Line(s.p1, s.p2), p)
+
+
+def get_point_relative_position(p_0: Point, p_1: Point, p_2: Point) \
+        -> PointRelativePosition:
+    """
+    Calculate Point Relative Position
+    :param p_0: Origin Point
+    :param p_1: Point
+    :param p_2: Point
+    :return: PointRelativePosition
+    """
+    v_1: Vector = Vector((p_1 - p_0).x, (p_1 - p_0).y)
+    v_2: Vector = Vector((p_2 - p_0).x, (p_2 - p_0).y)
+    if v_1.cross(v_2) > EPS:
+        return PointRelativePosition.COUNTER_CLOCK_WISE
+    if v_1.cross(v_2) < -EPS:
+        return PointRelativePosition.CLOCK_WISE
+    if v_1.dot(v_2) < -EPS:
+        return PointRelativePosition.ON_LINE_BACK
+    if v_1.norm() < v_2.norm():
+        return PointRelativePosition.ON_LINE_FRONT
+    return PointRelativePosition.ON_SEGMENT

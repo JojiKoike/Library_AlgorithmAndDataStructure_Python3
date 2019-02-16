@@ -1,7 +1,7 @@
 """
 Common module for geometry
 """
-import math
+from enum import Enum
 
 # EPS is acceptable error
 EPS: float = 1e-10
@@ -14,4 +14,15 @@ def equals(x_0: float, x_1: float) -> bool:
     :param x_1: Other Coordinate Value
     :return: Equality Calculation Result
     """
-    return math.fabs(x_0 - x_1) < EPS
+    return abs(x_0 - x_1) < EPS
+
+
+class PointRelativePosition(Enum):
+    """
+    Point relative position ENUM
+    """
+    COUNTER_CLOCK_WISE: int = 1
+    CLOCK_WISE: int = -1
+    ON_LINE_FRONT: int = 2
+    ON_LINE_BACK: int = -2
+    ON_SEGMENT: int = 0

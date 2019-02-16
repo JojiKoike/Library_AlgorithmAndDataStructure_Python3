@@ -3,8 +3,9 @@ import math
 from geometry.structs import Point, Vector, Segment, Line
 from geometry.methods import \
     is_orthogonal, is_parallel, project, reflect, \
-    get_distance, get_distance_lp, get_distance_sp
-from geometry.common import equals
+    get_distance, get_distance_lp, get_distance_sp, \
+    get_point_relative_position
+from geometry.common import equals, PointRelativePosition
 
 
 class GeometryMethodTestCase(unittest.TestCase):
@@ -72,6 +73,29 @@ class GeometryMethodTestCase(unittest.TestCase):
         self.assertEqual(equals(get_distance_sp(s, p_1), (p_1 - p_l).abs()), True)
         self.assertEqual(equals(get_distance_sp(s, p_2), 1.0 / math.sqrt(2)), True)
         self.assertEqual(equals(get_distance_sp(s, p_3), (p_3 - p_r).abs()), True)
+
+    def test_get_point_relative_position(self):
+        p_0: Point = Point(0, 0)
+        p_1: Point = Point(2, 0)
+        self.assertEqual(
+            get_point_relative_position(p_0, p_1, Point(-1, 1)),
+            PointRelativePosition.COUNTER_CLOCK_WISE)
+        self.assertEqual(
+            get_point_relative_position(p_0, p_1, Point(-1, -1)),
+            PointRelativePosition.CLOCK_WISE
+        )
+        self.assertEqual(
+            get_point_relative_position(p_0, p_1, Point(-1, 0)),
+            PointRelativePosition.ON_LINE_BACK
+        )
+        self.assertEqual(
+            get_point_relative_position(p_0, p_1, Point(3, 0)),
+            PointRelativePosition.ON_LINE_FRONT
+        )
+        self.assertEqual(
+            get_point_relative_position(p_0, p_1, Point(1, 0)),
+            PointRelativePosition.ON_SEGMENT
+        )
 
 
 if __name__ == '__main__':
