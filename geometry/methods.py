@@ -3,7 +3,7 @@ Geometry Methods Module
 """
 from typing import Optional
 from geometry.structs import Point, Vector, Segment, Line
-from geometry.common import equals
+from geometry.common import equals, EPS
 
 
 def is_orthogonal(*args) -> Optional[bool]:
@@ -115,3 +115,20 @@ def get_distance_lp(l: Line, p: Point) -> float:
     v_1: Vector = Vector(p.x - l.p1.x, p.y - l.p1.y)
     v_2: Vector = Vector(l.p2.x - l.p1.x, l.p2.y - l.p1.y)
     return abs(v_2.cross(v_1)) / v_2.abs()
+
+
+def get_distance_sp(s: Segment, p: Point) -> float:
+    """
+    Calculate Distance between point and segment
+    :param s: Segment
+    :param p: Point
+    :return: Distance between provided point and segment
+    """
+    v_1: Vector = Vector((p - s.p1).x, (p - s.p2).y)
+    v_2: Vector = Vector((p - s.p2).x, (p - s.p2).y)
+    v_base: Vector = Vector((s.p2 - s.p1).x, (s.p2 - s.p1).y)
+    if v_1.dot(v_base) < 0:
+        return (p - s.p1).abs()
+    if v_2.dot(v_base) > 0:
+        return (p - s.p2).abs()
+    return get_distance_lp(Line(s.p1, s.p2), p)
