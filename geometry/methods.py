@@ -134,6 +134,19 @@ def get_distance_sp(s: Segment, p: Point) -> float:
     return get_distance_lp(Line(s.p1, s.p2), p)
 
 
+def get_distance_ss(s_1: Segment, s_2: Segment) -> float:
+    """
+    Calculate distance between two segments
+    :param s_1: One Segment
+    :param s_2: The Other Segment
+    :return: Distance Between provided two segments
+    """
+    if intersect(s_1, s_2):
+        return 0
+    return min(min(get_distance_sp(s_2, s_1.p1), get_distance_sp(s_2, s_1.p2)),
+               min(get_distance_sp(s_1, s_2.p1), get_distance_sp(s_1, s_2.p2)))
+
+
 def get_point_relative_position(p_0: Point, p_1: Point, p_2: Point) \
         -> PointRelativePosition:
     """
