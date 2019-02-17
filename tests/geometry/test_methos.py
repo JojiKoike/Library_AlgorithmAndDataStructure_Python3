@@ -4,7 +4,7 @@ from geometry.structs import Point, Vector, Segment, Line
 from geometry.methods import \
     is_orthogonal, is_parallel, project, reflect, \
     get_distance, get_distance_lp, get_distance_sp, \
-    get_point_relative_position
+    get_point_relative_position, intersect
 from geometry.common import equals, PointRelativePosition
 
 
@@ -74,7 +74,7 @@ class GeometryMethodTestCase(unittest.TestCase):
         self.assertEqual(equals(get_distance_sp(s, p_2), 1.0 / math.sqrt(2)), True)
         self.assertEqual(equals(get_distance_sp(s, p_3), (p_3 - p_r).abs()), True)
 
-    def test_get_point_relative_position(self):
+    def test_get_point_relative_position_normal(self):
         p_0: Point = Point(0, 0)
         p_1: Point = Point(2, 0)
         self.assertEqual(
@@ -96,6 +96,15 @@ class GeometryMethodTestCase(unittest.TestCase):
             get_point_relative_position(p_0, p_1, Point(1, 0)),
             PointRelativePosition.ON_SEGMENT
         )
+
+    def test_intersect_normal(self):
+        s_1: Segment = Segment(Point(0, 0), Point(3, 0))
+        s_2: Segment = Segment(Point(1, 1), Point(2, -1))
+        s_3: Segment = Segment(Point(3, 1), Point(3, -1))
+        s_4: Segment = Segment(Point(3, -2), Point(5, 0))
+        self.assertEqual(intersect(s_1, s_2), True)
+        self.assertEqual(intersect(s_1, s_3), True)
+        self.assertEqual(intersect(s_1, s_4), False)
 
 
 if __name__ == '__main__':

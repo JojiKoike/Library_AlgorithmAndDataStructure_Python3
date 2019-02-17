@@ -153,4 +153,22 @@ def get_point_relative_position(p_0: Point, p_1: Point, p_2: Point) \
         return PointRelativePosition.ON_LINE_BACK
     if v_1.norm() < v_2.norm():
         return PointRelativePosition.ON_LINE_FRONT
-    return PointRelativePosition.ON_SEGMENT
+    return PointRelativePosition.ON_SEGMEN
+
+
+def intersect(s_1: Segment, s_2: Segment) -> bool:
+    """
+    Calc. Segment Intersection
+    :param s_1: One Segment
+    :param s_2: The other Segment
+    :return: Segment Intersect each other (bool)
+    """
+    v_1: Vector = Vector((s_1.p2 - s_1.p1).x, (s_1.p2 - s_1.p2).y)
+    v_11: Vector = Vector((s_2.p1 - s_1.p1).x, (s_2.p1 - s_1.p1).y)
+    v_12: Vector = Vector((s_2.p2 - s_1.p1).x, (s_2.p2 - s_1.p1).y)
+    v_2: Vector = Vector((s_2.p2 - s_2.p1).x, (s_2.p2 - s_2.p1).y)
+    v_21: Vector = Vector((s_1.p1 - s_2.p1).x, (s_1.p1 - s_2.p1).y)
+    v_22: Vector = Vector((s_1.p2 - s_2.p1).x, (s_1.p2 - s_2.p1).y)
+    return (v_1.cross(v_11) * v_1.cross(v_12) <= 0) and (v_2.cross(v_21) * v_2.cross(v_22) <= 0)
+
+
