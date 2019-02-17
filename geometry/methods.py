@@ -153,7 +153,7 @@ def get_point_relative_position(p_0: Point, p_1: Point, p_2: Point) \
         return PointRelativePosition.ON_LINE_BACK
     if v_1.norm() < v_2.norm():
         return PointRelativePosition.ON_LINE_FRONT
-    return PointRelativePosition.ON_SEGMEN
+    return PointRelativePosition.ON_SEGMENT
 
 
 def intersect(s_1: Segment, s_2: Segment) -> bool:
