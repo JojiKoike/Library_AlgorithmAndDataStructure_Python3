@@ -1,8 +1,9 @@
 """
 Geometry Methods Module
 """
-from typing import Optional
-from geometry.structs import Point, Vector, Segment, Line
+from typing import Optional, List
+import math
+from geometry.structs import Point, Vector, Segment, Line, Circle
 from geometry.common import equals, PointRelativePosition, EPS
 
 
@@ -203,3 +204,26 @@ def get_cross_point(s_1: Segment, s_2: Segment) -> Optional[Point]:
         return Point(p.x, p.y)
     return None
 
+
+def get_cross_points_circle_and_line(circle: Circle, line: Line) -> Optional[List[Point]]:
+    """
+    Calculate Line and Circle Cross Point Coordinate Values
+    :param circle: Circle
+    :param line: Line
+    :return: Cross Point or Contact Point
+    """
+    res: List[Point] = []
+    d: float = get_distance_lp(line, circle.c)
+    if circle.r - d > EPS:
+        p: Point = project(line, circle.c)
+        e: float = math.sqrt(math.pow(circle.r, 2.0) - math.pow(d, 2.0))
+        v_base: Vector = Vector((line.p2 - line.p1).x, (line.p2 - line.p1).y)
+        x_1: Vector = Vector(p.x, p.y) + v_base * e / v_base.abs()
+        x_2: Vector = Vector(p.x, p.y) - v_base * e / v_base.abs()
+        res.append(Point(x_1.x, x_1.y))
+        res.append(Point(x_2.x, x_2.y))
+        return res
+    elif equals(circle.r, d):
+        res.append(project(line, circle.c))
+        return res
+    return None

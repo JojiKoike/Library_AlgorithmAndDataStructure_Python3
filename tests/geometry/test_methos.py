@@ -1,10 +1,11 @@
 import unittest
 import math
-from geometry.structs import Point, Vector, Segment, Line
+from geometry.structs import Point, Vector, Segment, Line, Circle
 from geometry.methods import \
     is_orthogonal, is_parallel, project, reflect, \
     get_distance, get_distance_lp, get_distance_sp, \
-    get_point_relative_position, intersect, get_distance_ss, get_cross_point
+    get_point_relative_position, intersect, get_distance_ss, get_cross_point, \
+    get_cross_points_circle_and_line
 from geometry.common import equals, PointRelativePosition
 
 
@@ -125,6 +126,19 @@ class GeometryMethodTestCase(unittest.TestCase):
         self.assertEqual(equals(get_cross_point(s_1, s_3).x, 0.5), True)
         self.assertEqual(equals(get_cross_point(s_1, s_3).y, 0.5), True)
         self.assertIsNone(get_cross_point(s_1, s_4))
+
+    def test_get_cross_point_line_and_circle(self):
+        c_0 : Circle = Circle(Point(1, 1), 2)
+        l_1: Line = Line(Point(0, -2), Point(1, -2))
+        l_2: Line = Line(Point(0, -1), Point(1, -1))
+        l_3: Line = Line(Point(0, 0), Point(1, 0))
+        self.assertIsNone(get_cross_points_circle_and_line(c_0, l_1))
+        self.assertEqual(len(get_cross_points_circle_and_line(c_0, l_2)), 1)
+        self.assertEqual(equals(get_cross_points_circle_and_line(c_0, l_2)[0].x, 1.0), True)
+        self.assertEqual(equals(get_cross_points_circle_and_line(c_0, l_2)[0].y, -1.0), True)
+        self.assertEqual(len(get_cross_points_circle_and_line(c_0, l_3)), 2)
+        self.assertEqual(equals(get_cross_points_circle_and_line(c_0, l_3)[0].x, 1 + math.sqrt(3)), True)
+        self.assertEqual(equals(get_cross_points_circle_and_line(c_0, l_3)[1].x, 1 - math.sqrt(3)), True)
 
 
 if __name__ == '__main__':
