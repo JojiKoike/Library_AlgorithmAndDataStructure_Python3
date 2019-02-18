@@ -185,3 +185,21 @@ def intersect(s_1: Segment, s_2: Segment) -> bool:
     return (v_1.cross(v_11) * v_1.cross(v_12) <= 0) and (v_2.cross(v_21) * v_2.cross(v_22) <= 0)
 
 
+def get_cross_point(s_1: Segment, s_2: Segment) -> Optional[Point]:
+    """
+    Calculate Segment Cross Point
+    :param s_1: One Segment
+    :param s_2: The Other Segment
+    :return: Cross Point Coordinate Value if intersects
+    """
+    if intersect(s_1, s_2):
+        v_base: Vector = Vector((s_2.p2 - s_2.p1).x, (s_2.p2 - s_2.p1).y)
+        v_hypo1: Vector = Vector((s_1.p1 - s_2.p1).x, (s_1.p1 - s_2.p1).y)
+        v_hypo2: Vector = Vector((s_1.p2 - s_2.p1).x, (s_1.p2 - s_2.p1).y)
+        v: Vector = Vector((s_1.p2 - s_1.p1).x, (s_1.p2 - s_1.p1).y)
+        d1: float = abs(v_base.cross(v_hypo1))
+        d2: float = abs(v_base.cross(v_hypo2))
+        p: Vector = Vector(s_1.p1.x, s_1.p1.y) + v * (d1 / (d1 + d2))
+        return Point(p.x, p.y)
+    return None
+

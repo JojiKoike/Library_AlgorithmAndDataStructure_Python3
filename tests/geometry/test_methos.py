@@ -4,7 +4,7 @@ from geometry.structs import Point, Vector, Segment, Line
 from geometry.methods import \
     is_orthogonal, is_parallel, project, reflect, \
     get_distance, get_distance_lp, get_distance_sp, \
-    get_point_relative_position, intersect, get_distance_ss
+    get_point_relative_position, intersect, get_distance_ss, get_cross_point
 from geometry.common import equals, PointRelativePosition
 
 
@@ -114,6 +114,17 @@ class GeometryMethodTestCase(unittest.TestCase):
         self.assertEqual(intersect(s_1, s_2), True)
         self.assertEqual(intersect(s_1, s_3), True)
         self.assertEqual(intersect(s_1, s_4), False)
+
+    def test_get_cross_point_normal(self):
+        s_1: Segment = Segment(Point(0, 0), Point(1, 1))
+        s_2: Segment = Segment(Point(0, 1), Point(1, 0))
+        s_3: Segment = Segment(Point(1, 0), Point(0, 1))
+        s_4: Segment = Segment(Point(0, 1), Point(1, 2))
+        self.assertEqual(equals(get_cross_point(s_1, s_2).x, 0.5), True)
+        self.assertEqual(equals(get_cross_point(s_1, s_2).y, 0.5), True)
+        self.assertEqual(equals(get_cross_point(s_1, s_3).x, 0.5), True)
+        self.assertEqual(equals(get_cross_point(s_1, s_3).y, 0.5), True)
+        self.assertIsNone(get_cross_point(s_1, s_4))
 
 
 if __name__ == '__main__':
