@@ -1,3 +1,6 @@
+"""
+Geometry Methods Test Module
+"""
 import unittest
 import math
 from typing import List
@@ -11,6 +14,9 @@ from geometry.common import equals, PointRelativePosition
 
 
 class GeometryMethodTestCase(unittest.TestCase):
+    """
+    Geometry Methods Test Case Class
+    """
     def test_is_orthogonal_normal(self):
         # Vector
         v_1: Vector = Vector(1.0, 1.0)
@@ -129,17 +135,17 @@ class GeometryMethodTestCase(unittest.TestCase):
         self.assertIsNone(get_cross_point(s_1, s_4))
 
     def test_get_cross_point_line_and_circle(self):
-        c_0 : Circle = Circle(Point(1, 1), 2)
+        c_0: Circle = Circle(Point(1, 1), 2)
         l_1: Line = Line(Point(0, -2), Point(1, -2))
         l_2: Line = Line(Point(0, -1), Point(1, -1))
         l_3: Line = Line(Point(0, 0), Point(1, 0))
         self.assertIsNone(get_cross_points_circle_and_line(c_0, l_1))
         self.assertEqual(len(get_cross_points_circle_and_line(c_0, l_2)), 1)
-        self.assertEqual(equals(get_cross_points_circle_and_line(c_0, l_2)[0].x, 1.0), True)
-        self.assertEqual(equals(get_cross_points_circle_and_line(c_0, l_2)[0].y, -1.0), True)
+        self.assertTrue(equals(get_cross_points_circle_and_line(c_0, l_2)[0].x, 1.0))
+        self.assertTrue(equals(get_cross_points_circle_and_line(c_0, l_2)[0].y, -1.0))
         self.assertEqual(len(get_cross_points_circle_and_line(c_0, l_3)), 2)
-        self.assertEqual(equals(get_cross_points_circle_and_line(c_0, l_3)[0].x, 1 + math.sqrt(3)), True)
-        self.assertEqual(equals(get_cross_points_circle_and_line(c_0, l_3)[1].x, 1 - math.sqrt(3)), True)
+        self.assertTrue(equals(get_cross_points_circle_and_line(c_0, l_3)[0].x, 1 + math.sqrt(3)))
+        self.assertTrue(equals(get_cross_points_circle_and_line(c_0, l_3)[1].x, 1 - math.sqrt(3)))
 
     def test_get_common_points_circle_and_circle_normal(self):
         c_1: Circle = Circle(Point(0, 0), 2.0)
