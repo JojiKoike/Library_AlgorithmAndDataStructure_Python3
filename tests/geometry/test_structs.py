@@ -22,7 +22,7 @@ class GeometryStructsTestCase(unittest.TestCase):
                 if i == -1:
                     self.assertEqual(point < Point(0, 0), True)
                 elif i == 0:
-                    self.assertEqual(point < Point(0, 0), True if j == -1 else False)
+                    self.assertEqual(point < Point(0, 0), j == -1)
                 else:
                     self.assertEqual(point < Point(0, 0), False)
 
