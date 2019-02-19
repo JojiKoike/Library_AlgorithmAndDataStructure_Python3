@@ -227,3 +227,37 @@ def get_cross_points_circle_and_line(circle: Circle, line: Line) -> Optional[Lis
         res.append(project(line, circle.c))
         return res
     return None
+
+
+def get_common_points_circle_and_circle(c_1: Circle, c_2: Circle) -> Optional[List[Point]]:
+    """
+    Calculate Two Circle Common Points
+    :param c_1: One Circle
+    :param c_2: The Other Circle
+    :return: None: Not Intersect or Duplicate, List[Point] : Contacts or Intersects
+    """
+    d: float = abs(c_1.c - c_2.c)  # Distance Between Circle Centers
+    if c_1.r + c_2.r < d or abs(c_1.r - c_2.r) < d or (equals(c_1.r, c_2.r) and equals(d, 0)):
+        # Not Intersects or Completely Duplicates
+        return None
+    res: List[Point] = []
+    if equals(c_1.r + c_2.r, d) or equals(abs(c_1.r - c_2.r), d):
+        # Contacts Each Other
+        c_larger: Circle = c_1 if c_1.r >= c_2.r else c_2
+        c_smaller: Circle = c_1 if c_1.r < c_2.r else c_2
+        v_c1_c2: Vector = Vector((c_smaller.c - c_larger.c).x, (c_smaller.c - c_larger.c).y)
+        x_c: Vector = Vector(c_larger.c.x, c_larger.c.y) + v_c1_c2 * (c_larger.r / d)
+        res.append(Point(x_c.x, x_c.y))
+    if abs(c_1.r - c_2.r) < d < c_1.r + c_2.r:
+        # Intersects
+        t: float = 0 if c_1.c.x == c_2.c.x \
+            else math.atan(abs((c_2.c - c_1.c).y / (c_2.c - c_1.c).x))
+        alpha: float = \
+            math.acos((c_1.r * c_1.r + d * d - c_2.r * c_2.r) / 2 * c_1.r * d)
+        v_1: Vector = Vector(c_1.c.x, c_1.c.y) + \
+            Vector(c_1.r * math.cos(t + alpha), c_1.r * math.sin(t + alpha))
+        v_2: Vector = Vector(c_1.c.x, c_1.c.y) + \
+            Vector(c_1.r * math.cos(t - alpha), c_1.r * math.sin(t - alpha))
+        res.append(Point(v_1.x, v_1.y))
+        res.append(Point(v_2.x, v_2.y))
+    return res
