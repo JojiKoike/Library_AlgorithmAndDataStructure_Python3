@@ -1,11 +1,12 @@
 import unittest
 import math
+from typing import List
 from geometry.structs import Point, Vector, Segment, Line, Circle
 from geometry.methods import \
     is_orthogonal, is_parallel, project, reflect, \
     get_distance, get_distance_lp, get_distance_sp, \
     get_point_relative_position, intersect, get_distance_ss, get_cross_point, \
-    get_cross_points_circle_and_line
+    get_cross_points_circle_and_line, get_common_points_circle_and_circle
 from geometry.common import equals, PointRelativePosition
 
 
@@ -139,6 +140,47 @@ class GeometryMethodTestCase(unittest.TestCase):
         self.assertEqual(len(get_cross_points_circle_and_line(c_0, l_3)), 2)
         self.assertEqual(equals(get_cross_points_circle_and_line(c_0, l_3)[0].x, 1 + math.sqrt(3)), True)
         self.assertEqual(equals(get_cross_points_circle_and_line(c_0, l_3)[1].x, 1 - math.sqrt(3)), True)
+
+    def test_get_common_points_circle_and_circle_normal(self):
+        c_1: Circle = Circle(Point(0, 0), 2.0)
+        c_2: Circle = Circle(Point(2.0, 0), 2.0)
+        # Intersects Case
+        res: List[Point] = get_common_points_circle_and_circle(c_1, c_2)
+        self.assertEqual(len(res), 2)
+        self.assertTrue(equals(res[0].x, 2.0 * 1.0 / 2.0))
+        self.assertTrue(equals(res[0].y, 2.0 * math.sqrt(3.0) / 2.0))
+        self.assertTrue(equals(res[1].x, 2.0 * 1.0 / 2.0))
+        self.assertTrue(equals(res[1].y, -2.0 * math.sqrt(3.0) / 2.0))
+        c_2_1: Circle = Circle(Point(0, 2.0), 2.0)
+        res = get_common_points_circle_and_circle(c_1, c_2_1)
+        self.assertEqual(len(res), 2)
+        self.assertTrue(equals(res[0].x, -2.0 * math.sqrt(3.0) / 2.0))
+        self.assertTrue(equals(res[0].y, 2.0 * 1.0 / 2.0))
+        self.assertTrue(equals(res[1].x, 2.0 * math.sqrt(3.0) / 2.0))
+        self.assertTrue(equals(res[1].y, 2.0 * 1.0 / 2.0))
+        c_2_2: Circle = Circle(Point(2.0, 2.0), 2.0)
+        res = get_common_points_circle_and_circle(c_1, c_2_2)
+        self.assertEqual(len(res), 2)
+        self.assertTrue(equals(res[0].x, 0))
+        self.assertTrue(equals(res[0].y, 2.0))
+        self.assertTrue(equals(res[1].x, 2.0))
+        self.assertTrue(equals(res[1].y, 0))
+        # Contacts Case
+        c_3: Circle = Circle(Point(4.0, 0), 2.0)
+        res = get_common_points_circle_and_circle(c_1, c_3)
+        self.assertEqual(len(res), 1)
+        self.assertTrue(equals(res[0].x, 2.0))
+        self.assertTrue(equals(res[0].y, 0))
+        # Not Intersects and Contacts Case
+        c_4: Circle = Circle(Point(5.0, 0), 2.0)
+        res = get_common_points_circle_and_circle(c_1, c_4)
+        self.assertIsNone(res)
+        c_5: Circle = Circle(Point(1.0, 0), 0.5)
+        res = get_common_points_circle_and_circle(c_1, c_5)
+        self.assertIsNone(res)
+        # Completely Duplicates Case
+        res = get_common_points_circle_and_circle(c_1, c_1)
+        self.assertIsNone(res)
 
 
 if __name__ == '__main__':

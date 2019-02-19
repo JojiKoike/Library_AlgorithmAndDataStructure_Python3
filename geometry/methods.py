@@ -236,11 +236,12 @@ def get_common_points_circle_and_circle(c_1: Circle, c_2: Circle) -> Optional[Li
     :param c_2: The Other Circle
     :return: None: Not Intersect or Duplicate, List[Point] : Contacts or Intersects
     """
-    d: float = abs(c_1.c - c_2.c)  # Distance Between Circle Centers
-    if c_1.r + c_2.r < d or abs(c_1.r - c_2.r) < d or (equals(c_1.r, c_2.r) and equals(d, 0)):
-        # Not Intersects or Completely Duplicates
-        return None
+    d: float = (c_1.c - c_2.c).abs()  # Distance Between Circle Centers
     res: List[Point] = []
+    if c_1.c == c_2.c and equals(c_1.r, c_2.r) \
+            or c_1.r + c_2.r < d or abs(c_1.r - c_2.r) > d:
+        # Completely Duplicates or Not Contacts and Intersects
+        return None
     if equals(c_1.r + c_2.r, d) or equals(abs(c_1.r - c_2.r), d):
         # Contacts Each Other
         c_larger: Circle = c_1 if c_1.r >= c_2.r else c_2
@@ -250,10 +251,11 @@ def get_common_points_circle_and_circle(c_1: Circle, c_2: Circle) -> Optional[Li
         res.append(Point(x_c.x, x_c.y))
     if abs(c_1.r - c_2.r) < d < c_1.r + c_2.r:
         # Intersects
-        t: float = 0 if c_1.c.x == c_2.c.x \
+        t: float = (math.pi / 2.0 if c_1.c.y < c_2.c.y else -math.pi / 2.0)\
+            if c_1.c.x == c_2.c.x \
             else math.atan(abs((c_2.c - c_1.c).y / (c_2.c - c_1.c).x))
         alpha: float = \
-            math.acos((c_1.r * c_1.r + d * d - c_2.r * c_2.r) / 2 * c_1.r * d)
+            math.acos((c_1.r * c_1.r + d * d - c_2.r * c_2.r) / (2 * c_1.r * d))
         v_1: Vector = Vector(c_1.c.x, c_1.c.y) + \
             Vector(c_1.r * math.cos(t + alpha), c_1.r * math.sin(t + alpha))
         v_2: Vector = Vector(c_1.c.x, c_1.c.y) + \
