@@ -3,8 +3,8 @@ Geometry Methods Module
 """
 from typing import Optional, List
 import math
-from geometry.structs import Point, Vector, Segment, Line, Circle
-from geometry.common import equals, PointRelativePosition, EPS
+from geometry.structs import Point, Vector, Segment, Line, Circle, Polygon
+from geometry.common import equals, PointRelativePosition, EPS, PointContainsInPolygon
 
 
 def is_orthogonal(*args) -> Optional[bool]:
@@ -263,3 +263,31 @@ def get_common_points_circle_and_circle(c_1: Circle, c_2: Circle) -> Optional[Li
         res.append(Point(v_1.x, v_1.y))
         res.append(Point(v_2.x, v_2.y))
     return res
+
+
+def point_contained_in_polygon(poly: Polygon, p: Point) -> PointContainsInPolygon:
+    """
+    Calculate Is Point Contained in Polygon
+    :param poly: Polygon
+    :param p: Point
+    :return: PointContainsInPolygon
+    """
+    n: int = len(poly.p_i)  # Number of Nodes of Polygon
+    count_intersect: int = 0
+    for i in range(n):
+        a: Point = poly.p_i[i] - p
+        b: Point = poly.p_i[(i + 1) % n] - p
+        v_1: Vector = Vector(a.x, a.y)
+        v_2: Vector = Vector(b.x, b.y)
+        if v_1.dot(v_2) < 0 and equals(v_1.cross(v_2), 0):
+            return PointContainsInPolygon.ON_EDGE
+        if a.y > b.y:
+            a, b = b, a
+            v_1 = Vector(a.x, a.y)
+            v_2 = Vector(b.x, b.y)
+        if a.y < EPS < b.y and v_1.cross(v_2) > EPS:
+            count_intersect += 1
+    return PointContainsInPolygon.IN \
+        if count_intersect % 2 == 1 else PointContainsInPolygon.OUT
+
+

@@ -4,13 +4,14 @@ Geometry Methods Test Module
 import unittest
 import math
 from typing import List
-from geometry.structs import Point, Vector, Segment, Line, Circle
+from geometry.structs import Point, Vector, Segment, Line, Circle, Polygon
 from geometry.methods import \
     is_orthogonal, is_parallel, project, reflect, \
     get_distance, get_distance_lp, get_distance_sp, \
     get_point_relative_position, intersect, get_distance_ss, get_cross_point, \
-    get_cross_points_circle_and_line, get_common_points_circle_and_circle
-from geometry.common import equals, PointRelativePosition
+    get_cross_points_circle_and_line, get_common_points_circle_and_circle, \
+    point_contained_in_polygon
+from geometry.common import equals, PointRelativePosition, PointContainsInPolygon
 
 
 class GeometryMethodTestCase(unittest.TestCase):
@@ -187,6 +188,16 @@ class GeometryMethodTestCase(unittest.TestCase):
         # Completely Duplicates Case
         res = get_common_points_circle_and_circle(c_1, c_1)
         self.assertIsNone(res)
+
+    def test_point_contained_in_polygon(self):
+        poly: Polygon = Polygon([Point(0, 0), Point(3, 1), Point(2, 3), Point(0, 3)])
+        p_1: Point = Point(2, 1)
+        self.assertEqual(point_contained_in_polygon(poly, p_1), PointContainsInPolygon.IN)
+        p_2: Point = Point(0, 2)
+        self.assertEqual(point_contained_in_polygon(poly, p_2), PointContainsInPolygon.ON_EDGE)
+        p_3: Point = Point(3, 2)
+        self.assertEqual(point_contained_in_polygon(poly, p_3), PointContainsInPolygon.OUT)
+
 
 
 if __name__ == '__main__':

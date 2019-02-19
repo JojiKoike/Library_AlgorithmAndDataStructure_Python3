@@ -26,3 +26,12 @@ class PointRelativePosition(Enum):
     ON_LINE_FRONT: int = 2
     ON_LINE_BACK: int = -2
     ON_SEGMENT: int = 0
+
+
+class PointContainsInPolygon(Enum):
+    """
+    Point Contained in Polygon Status
+    """
+    IN: int = 2
+    ON_EDGE: int = 1
+    OUT: int = 0
