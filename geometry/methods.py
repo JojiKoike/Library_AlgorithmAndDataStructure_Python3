@@ -291,3 +291,43 @@ def point_contained_in_polygon(poly: Polygon, p: Point) -> PointContainsInPolygo
         if count_intersect % 2 == 1 else PointContainsInPolygon.OUT
 
 
+def get_convex_hull(g: Polygon) -> Polygon:
+    """
+    Solve Convex Hull with Andrew Algorithm
+    :param g: Polygon
+    :return: Convex Hull Polygon
+    """
+    if len(g.p_i) < 3:
+        return g
+    poly_u: Polygon
+    poly_l: Polygon
+    sorted(g.p_i)
+    poly_u.p_i.append(g.p_i[0])
+    poly_u.p_i.append(g.p_i[1])
+    poly_l.p_i.append(g.p_i[len(g.p_i) - 1])
+    poly_l.p_i.append(g.p_i[len(g.p_i) - 2])
+
+    # Build Convex Hull Upper Part
+    for i in range(2, len(g.p_i)):
+        for j in range(len(poly_u.p_i), 1, -1):
+            if get_point_relative_position(poly_u.p_i[j - 2],
+                                           poly_u.p_i[j - 1],
+                                           g.p_i[i]) != PointRelativePosition.CLOCK_WISE:
+                poly_u.p_i.pop()
+        poly_u.p_i.append(g.p_i[i])
+
+    # Build Convex Hull Lower Part
+    for i in range(len(g.p_i) - 3, -1, -1):
+        for j in range(len(poly_l.p_i), 1, -1):
+            if get_point_relative_position(poly_l.p_i[j - 2],
+                                           poly_l.p_i[j - 1],
+                                           g.p_i[i]) != PointRelativePosition.CLOCK_WISE:
+                poly_l.p_i.pop()
+        poly_l.p_i.append(g.p_i[i])
+
+    # Build Convex Hull Nodes List
+    sorted(poly_l.p_i, reverse=True)
+    for i in range(len(poly_u.p_i) -2, 0, -1):
+        poly_l.p_i.append(poly_u.p_i[i])
+
+    return poly_l
