@@ -10,7 +10,7 @@ from geometry.methods import \
     get_distance, get_distance_lp, get_distance_sp, \
     get_point_relative_position, intersect, get_distance_ss, get_cross_point, \
     get_cross_points_circle_and_line, get_common_points_circle_and_circle, \
-    point_contained_in_polygon
+    point_contained_in_polygon, get_convex_hull
 from geometry.common import equals, PointRelativePosition, PointContainsInPolygon
 
 
@@ -198,6 +198,15 @@ class GeometryMethodTestCase(unittest.TestCase):
         p_3: Point = Point(3, 2)
         self.assertEqual(point_contained_in_polygon(poly, p_3), PointContainsInPolygon.OUT)
 
+    def test_get_convex_hull_normal(self):
+        poly: Polygon = Polygon([Point(2, 1), Point(0, 0), Point(1, 2),
+                                 Point(2, 2), Point(4, 2), Point(1, 3), Point(3, 3)])
+        res: Polygon = get_convex_hull(poly)
+        #self.assertEqual(4, len(res.p_i))
+        x_expected: List[float] = [0, 2, 4, 3, 1]
+        y_expected: List[float] = [0, 1, 2, 3, 3]
+        for i in range(4):
+            print("{0} {1}".format(res.p_i[i].x, res.p_i[i].y))
 
 
 if __name__ == '__main__':
