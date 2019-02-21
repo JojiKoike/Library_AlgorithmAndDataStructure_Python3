@@ -300,9 +300,6 @@ def get_convex_hull(g: Polygon) -> Polygon:
     if len(g.p_i) < 3:
         return g
     g.p_i.sort()
-    for p in g.p_i:
-        print("[{0},{1}]".format(p.x, p.y))
-    print()
     poly_u: Polygon = Polygon([])
     poly_l: Polygon = Polygon([])
     poly_u.p_i.append(g.p_i[0])
@@ -315,30 +312,21 @@ def get_convex_hull(g: Polygon) -> Polygon:
         for j in range(len(poly_u.p_i), 1, -1):
             if get_point_relative_position(poly_u.p_i[j - 2],
                                            poly_u.p_i[j - 1],
-                                           g.p_i[i]) != PointRelativePosition.CLOCK_WISE:
+                                           g.p_i[i]) == PointRelativePosition.COUNTER_CLOCK_WISE:
                 poly_u.p_i.pop()
         poly_u.p_i.append(g.p_i[i])
-
-    for p in poly_u.p_i:
-        print("[{0},{1}]".format(p.x, p.y))
-    print()
 
     # Build Convex Hull Lower Part
     for i in range(len(g.p_i) - 3, -1, -1):
         for j in range(len(poly_l.p_i), 1, -1):
             if get_point_relative_position(poly_l.p_i[j - 2],
                                            poly_l.p_i[j - 1],
-                                           g.p_i[i]) != PointRelativePosition.CLOCK_WISE:
+                                           g.p_i[i]) == PointRelativePosition.COUNTER_CLOCK_WISE:
                 poly_l.p_i.pop()
         poly_l.p_i.append(g.p_i[i])
 
-    for p in poly_l.p_i:
-        print("[{0},{1}]".format(p.x, p.y))
-    print()
-
     # Build Convex Hull Nodes List
-    poly_l.p_i.sort(reverse=True)
-
+    poly_l.p_i.sort()
     for i in range(len(poly_u.p_i) - 2, 0, -1):
         poly_l.p_i.append(poly_u.p_i[i])
 

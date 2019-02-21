@@ -202,11 +202,12 @@ class GeometryMethodTestCase(unittest.TestCase):
         poly: Polygon = Polygon([Point(2, 1), Point(0, 0), Point(1, 2),
                                  Point(2, 2), Point(4, 2), Point(1, 3), Point(3, 3)])
         res: Polygon = get_convex_hull(poly)
-        #self.assertEqual(4, len(res.p_i))
+        self.assertEqual(5, len(res.p_i))
         x_expected: List[float] = [0, 2, 4, 3, 1]
         y_expected: List[float] = [0, 1, 2, 3, 3]
-        for i in range(4):
-            print("{0} {1}".format(res.p_i[i].x, res.p_i[i].y))
+        for i in range(5):
+            self.assertTrue(equals(res.p_i[i].x, x_expected[i]))
+            self.assertTrue(equals(res.p_i[i].y, y_expected[i]))
 
 
 if __name__ == '__main__':
