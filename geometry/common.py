@@ -35,3 +35,13 @@ class PointContainsInPolygon(Enum):
     IN: int = 2
     ON_EDGE: int = 1
     OUT: int = 0
+
+
+class EndPointType(Enum):
+    """
+    Segment Endpoint Type
+    """
+    BOTTOM: int = 0
+    LEFT: int = 1
+    RIGHT: int = 2
+    TOP: int = 3
