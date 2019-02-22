@@ -6,7 +6,7 @@ from typing import List, Optional
 import math
 import sys
 import traceback
-from geometry.common import EPS
+from geometry.common import EPS, EndPointType
 
 
 class Point(object):
@@ -138,3 +138,19 @@ class Circle:
     """
     c: Point
     r: float
+
+
+class EndPoint(object):
+    """
+    Segment Endpoint Data Structure
+    """
+    def __init__(self, p: Point, seg_id: int, end_point_type: EndPointType):
+        self.p = p
+        self.seg = seg_id
+        self.st = end_point_type
+
+    def __lt__(self, other):
+        if self.p.y == other.p.y:
+            return self.st < other.st
+        else:
+            return self.p.y < other.p.y
