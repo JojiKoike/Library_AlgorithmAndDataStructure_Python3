@@ -370,10 +370,7 @@ def get_num_of_segment_intersections(segments: List[Segment]) -> int:
         if ep[j].st == EndPointType.TOP:
             bt.remove(ep[j].p.x)
         elif ep[j].st == EndPointType.BOTTOM:
-            l: int = bisect.bisect_left(bt, ep[j].p.x)
-            r: int = bisect.bisect_right(bt, ep[j].p.x)
-            if l == r:
-                bisect.insort(bt, ep[j].p.x)
+            bisect.insort(bt, ep[j].p.x)
         elif ep[j].st == EndPointType.LEFT:
             left: int = bisect.bisect_left(bt, segments[ep[j].seg].p1.x)
             right: int = bisect.bisect_right(bt, segments[ep[j].seg].p2.x)
