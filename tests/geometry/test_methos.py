@@ -10,7 +10,7 @@ from geometry.methods import \
     get_distance, get_distance_lp, get_distance_sp, \
     get_point_relative_position, intersect, get_distance_ss, get_cross_point, \
     get_cross_points_circle_and_line, get_common_points_circle_and_circle, \
-    point_contained_in_polygon, get_convex_hull
+    point_contained_in_polygon, get_convex_hull, get_num_of_segment_intersections
 from geometry.common import equals, PointRelativePosition, PointContainsInPolygon
 
 
@@ -208,6 +208,15 @@ class GeometryMethodTestCase(unittest.TestCase):
         for i in range(5):
             self.assertTrue(equals(res.p_i[i].x, x_expected[i]))
             self.assertTrue(equals(res.p_i[i].y, y_expected[i]))
+
+    def test_get_num_of_segment_intersections_normal(self):
+        segments: List[Segment] = [Segment(Point(2, 2), Point(2, 5)),
+                                   Segment(Point(1, 3), Point(5, 3)),
+                                   Segment(Point(4, 1), Point(4, 4)),
+                                   Segment(Point(5, 2), Point(7, 2)),
+                                   Segment(Point(6, 1), Point(6, 3)),
+                                   Segment(Point(6, 5), Point(6, 7))]
+        self.assertEqual(3, get_num_of_segment_intersections(segments))
 
 
 if __name__ == '__main__':

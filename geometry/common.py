@@ -1,7 +1,7 @@
 """
 Common module for geometry
 """
-from enum import Enum
+from enum import Enum, IntEnum
 
 # EPS is acceptable error
 EPS: float = 1e-10
@@ -37,7 +37,7 @@ class PointContainsInPolygon(Enum):
     OUT: int = 0
 
 
-class EndPointType(Enum):
+class EndPointType(IntEnum):
     """
     Segment Endpoint Type
     """
@@ -45,3 +45,4 @@ class EndPointType(Enum):
     LEFT: int = 1
     RIGHT: int = 2
     TOP: int = 3
+
