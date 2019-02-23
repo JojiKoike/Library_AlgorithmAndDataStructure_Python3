@@ -3,8 +3,11 @@ Geometry Methods Module
 """
 from typing import Optional, List
 import math
-from geometry.structs import Point, Vector, Segment, Line, Circle, Polygon
-from geometry.common import equals, PointRelativePosition, EPS, PointContainsInPolygon
+import bisect
+from geometry.structs import Point, Vector, Segment, \
+    Line, Circle, Polygon, EndPoint
+from geometry.common import equals, PointRelativePosition, \
+    EPS, PointContainsInPolygon, EndPointType
 
 
 def is_orthogonal(*args) -> Optional[bool]:
@@ -331,3 +334,45 @@ def get_convex_hull(g: Polygon) -> Polygon:
         poly_l.p_i.append(poly_u.p_i[i])
 
     return poly_l
+
+
+def get_num_of_segment_intersections(segments: List[Segment]) -> int:
+    """
+    Get Number of Segment Intersections (Manhattan Geometry)
+    :param segments: Segment List
+    :return: Number of Segment Intersections
+    """
+    n: int = len(segments)
+    k: int = 0
+    ep: List[EndPoint] = [EndPoint(Point(i, i), i, EndPointType.BOTTOM) for i in range(2 * n)]
+    for i in range(n):
+        if segments[i].p1.y == segments[i].p2.y:
+            if segments[i].p1.x > segments[i].p2.x:
+                segments[i].p1, segments[i].p2 = segments[i].p2, segments[i].p1
+        elif segments[i].p1.y > segments[i].p2.y:
+            segments[i].p1, segments[i].p2 = segments[i].p2, segments[i].p1
+
+        if segments[i].p1.y == segments[i].p2.y:
+            ep[k] = EndPoint(Point(segments[i].p1.x, segments[i].p1.y), i, EndPointType.LEFT)
+            k += 1
+            ep[k] = EndPoint(Point(segments[i].p2.x, segments[i].p2.y), i, EndPointType.RIGHT)
+            k += 1
+        else:
+            ep[k] = EndPoint(Point(segments[i].p1.x, segments[i].p1.y), i, EndPointType.BOTTOM)
+            k += 1
+            ep[k] = EndPoint(Point(segments[i].p2.x, segments[i].p2.y), i, EndPointType.TOP)
+            k += 1
+        ep.sort()
+
+    bt: List[int] = [] # Binary Tree of Intersect Point x-coordinate value
+    cnt: int = 0
+    for j in range(2 * n):
+        if ep[j].st == EndPointType.TOP:
+            bt.remove(ep[j].p.x)
+        elif ep[j].st == EndPointType.BOTTOM:
+            bisect.insort(bt, ep[j].p.x)
+        elif ep[j].st == EndPointType.LEFT:
+            left: int = bisect.bisect_left(bt, segments[ep[j].seg].p1.x)
+            right: int = bisect.bisect_right(bt, segments[ep[j].seg].p2.x)
+            cnt += right - left
+    return cnt
