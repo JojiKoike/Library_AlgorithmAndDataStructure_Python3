@@ -4,7 +4,7 @@ Data Structure Structs Module
 from typing import List
 
 
-class DisjointSet(object):
+class DisjointSet:
     """
     DisjointSet Data Structure
     """
@@ -59,3 +59,37 @@ class DisjointSet(object):
         :return:
         """
         return self.__find_set(x) == self.__find_set(y)
+
+
+class Node:
+    """
+    Node of x-y plane Data Structure
+    """
+    def __init__(self, location: int, p: int, l: int, r: int) -> None:
+        """
+        Constructor
+        :param location: Location Index
+        :param p: Parent Node Index
+        :param l: Left Side Tree Root Index
+        :param r: Right Side Tree Root Index
+        """
+        self.location = location
+        self.p = p
+        self.l = l
+        self.r = r
+
+
+class Point:
+    """
+    Point of x-y plane Data Structure
+    """
+    def __init__(self, point_id: int, x: int, y: int) -> None:
+        self.point_id = point_id
+        self.x = x
+        self.y = y
+
+    def __lt__(self, other):
+        return self.point_id < other.point_id
+
+    def __str__(self):
+        print(self.point_id)
