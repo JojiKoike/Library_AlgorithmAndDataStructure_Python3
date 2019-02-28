@@ -91,5 +91,5 @@ class Point:
     def __lt__(self, other):
         return self.point_id < other.point_id
 
-    def __str__(self):
-        print(self.point_id)
+    def __repr__(self):
+        return str(self.point_id)

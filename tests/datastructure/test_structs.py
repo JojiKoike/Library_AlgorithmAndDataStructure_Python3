@@ -2,7 +2,8 @@
 Data Structure Structs Test Module
 """
 import unittest
-from datastructure.structs import DisjointSet
+from typing import List
+from datastructure.structs import DisjointSet, Point
 
 
 class DataStructureStrutsTestCase(unittest.TestCase):
@@ -23,6 +24,15 @@ class DataStructureStrutsTestCase(unittest.TestCase):
         ds.unite(0, 4)
         self.assertTrue(ds.same(0, 2))
         self.assertTrue(ds.same(3, 0))
+
+    def test_point_normal(self):
+        points: List[Point] = [Point(i, i + 1, i + 2) for i in range(5)]
+        sorted(points, reverse=True)
+        for i in range(4, -1, -1):
+            self.assertEqual(points[i].point_id, i)
+            self.assertEqual(points[i].x, i + 1)
+            self.assertEqual(points[i].y, i + 2)
+            print(points[i])
 
 
 if __name__ == '__main__':
