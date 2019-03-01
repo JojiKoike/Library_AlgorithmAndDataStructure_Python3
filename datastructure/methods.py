@@ -7,7 +7,7 @@ from .structs import Node, Point
 
 def make_kd_tree(l: int, r: int, depth: int, points: List[Point], tree: List[Node], np: int) -> Optional[int]:
     """
-    Meke K-dimension Tree
+    Make K-dimension Tree
     :param l:
     :param r:
     :param depth:
@@ -26,7 +26,7 @@ def make_kd_tree(l: int, r: int, depth: int, points: List[Point], tree: List[Nod
         for i, point in enumerate(s_points):
             points[l + i] = point
     else:
-        s_points: List[Point] = sorted(points[l:r], key=lambda point: point.y)
+        s_points = sorted(points[l:r], key=lambda point: point.y)
         for i, point in enumerate(s_points):
             points[l + i] = point
     tree[t].location = mid

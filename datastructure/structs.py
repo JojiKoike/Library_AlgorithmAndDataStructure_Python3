@@ -1,7 +1,7 @@
 """
 Data Structure Structs Module
 """
-from typing import List
+from typing import List, Optional
 
 
 class DisjointSet:
@@ -65,7 +65,11 @@ class Node:
     """
     Node of x-y plane Data Structure
     """
-    def __init__(self, location: int, p: int, l: int, r: int) -> None:
+    def __init__(self,
+                 location: Optional[int],
+                 p: Optional[int],
+                 l: Optional[int],
+                 r: Optional[int]) -> None:
         """
         Constructor
         :param location: Location Index
