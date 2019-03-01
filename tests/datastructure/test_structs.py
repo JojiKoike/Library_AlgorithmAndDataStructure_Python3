@@ -6,7 +6,7 @@ from typing import List
 from datastructure.structs import DisjointSet, Point
 
 
-class DataStructureStrutsTestCase(unittest.TestCase):
+class DataStructureStructsTestCase(unittest.TestCase):
     """
     DataStructure Structs Test Case Class
     """
