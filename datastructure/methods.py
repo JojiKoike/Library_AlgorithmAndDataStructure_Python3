@@ -3,35 +3,34 @@ DataStructure Methods Module
 """
 from typing import List, Optional
 from .structs import Node, Point
+np: int = 0
 
 
-def make_kd_tree(l: int, r: int, depth: int, points: List[Point], tree: List[Node], np: int) -> Optional[int]:
+def make_kd_tree(l: int, r: int, depth: int, points: List[Point], tree: List[Node]) -> Optional[int]:
     """
     Make K-dimension Tree
     :param l:
     :param r:
     :param depth:
-    :param points:
     :param tree:
-    :param np:
+    :param points:
     :return:
     """
     if not l < r:
         return None
     mid: int = int((l + r) / 2)
+    global np
     t: int = np
     np += 1
     if depth % 2 == 0:
         s_points: List[Point] = sorted(points[l:r], key=lambda point: point.x)
-        for i, point in enumerate(s_points):
-            points[l + i] = point
     else:
         s_points = sorted(points[l:r], key=lambda point: point.y)
-        for i, point in enumerate(s_points):
-            points[l + i] = point
+    for i, point in enumerate(s_points):
+        points[l + i] = point
     tree[t].location = mid
-    tree[t].l = make_kd_tree(l, mid, depth + 1, points, tree, np)
-    tree[t].r = make_kd_tree(mid + 1, r, depth + 1, points, tree, np)
+    tree[t].l = make_kd_tree(l, mid, depth + 1, points, tree)
+    tree[t].r = make_kd_tree(mid + 1, r, depth + 1, points, tree)
 
     return t
 

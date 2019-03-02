@@ -12,9 +12,25 @@ class DataStructureMethodsTestCase(unittest.TestCase):
             Point(3, 6, 2), Point(4, 3, 3), Point(5, 5, 4)
         ]
         tree: List[Node] = [Node(None, None, None, None) for i in range(6)]
-        t: int = make_kd_tree(0, 6, 0, points, tree, 0)
+        t: int = make_kd_tree(0, 6, 0, points, tree)
+        for node in tree:
+            print("[{0},{1},{2},{3}]".format(
+                node.location, node.p, node.l, node.r))
+
         self.assertEqual(0, t)
 
+    def test_find_range_search_normal(self):
+        points: List[Point] = [
+            Point(0, 2, 1), Point(1, 2, 2), Point(2, 4, 2),
+            Point(3, 6, 2), Point(4, 3, 3), Point(5, 5, 4)
+        ]
+        tree: List[Node] = [Node(None, None, None, None) for i in range(6)]
+        t: int = make_kd_tree(0, 6, 0, points, tree)
+        ans: List[Point] = []
+        find_range_search(t, 2, 4, 0, 4, 0, points, tree, ans)
+        ans.sort()
+        for i, id in enumerate([0, 1, 2, 4]):
+            self.assertEqual(id, ans[i].point_id)
 
 if __name__ == '__main__':
     unittest.main()
