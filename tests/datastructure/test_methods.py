@@ -37,5 +37,6 @@ class DataStructureMethodsTestCase(unittest.TestCase):
         for i, id in enumerate([2, 3, 5]):
             self.assertEqual(id, ans2[i].point_id)
 
+
 if __name__ == '__main__':
     unittest.main()
