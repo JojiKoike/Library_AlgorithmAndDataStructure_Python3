@@ -1,7 +1,7 @@
 import unittest
 from typing import List
 from graph.common import INFINITY
-from graph.methods import warshall_floyd
+from graph.methods import warshall_floyd, topological_sort
 
 
 class GraphMethodsTestCase(unittest.TestCase):
@@ -32,8 +32,11 @@ class GraphMethodsTestCase(unittest.TestCase):
         res: List[List[int]] = warshall_floyd(dt)
         self.assertIsNone(res)
 
-
-
+    def test_topological_sort_normal(self):
+        adj_table: List[List] = [[1], [2], [], [1, 4], [5], [2]]
+        res: List[int] = topological_sort(adj_table)
+        for i, id in enumerate([0, 3, 1, 4, 5, 2]):
+            self.assertEqual(res[i], id)
 
 
 if __name__ == '__main__':
