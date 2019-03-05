@@ -39,3 +39,19 @@ def is_prime(n: int) -> bool:
             return False
         i += 2
     return True
+
+
+def gcd(x: int, y: int) -> int:
+    """
+    Compute G.C.D
+    :param x: One Number
+    :param y: The Other Number
+    :return: G.C.D
+    """
+    if x < y:
+        x, y = y, x
+    while y > 0:
+        r = x % y
+        x = y
+        y = r
+    return x

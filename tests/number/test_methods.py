@@ -1,5 +1,5 @@
 import unittest
-from number.methods import power, is_prime
+from number.methods import power, is_prime, gcd
 
 
 class NumberMethodTestCase(unittest.TestCase):
@@ -17,6 +17,9 @@ class NumberMethodTestCase(unittest.TestCase):
         self.assertEqual(False, is_prime(9))
         # prime
         self.assertEqual(True, is_prime(3))
+
+    def test_gcd_normal(self):
+        self.assertEqual(21, gcd(147, 105))
 
 
 if __name__ == '__main__':
