@@ -77,8 +77,16 @@ timer: int = 0
 
 
 def articulation_point(g: List[List[int]]) -> List[int]:
+    """
+    Graph Articulation Point Finder
+    :param g: Graph
+    :return: Articulation Point index list
+    """
     n: int = len(g)
-    global visited, timer
+    global prenum, lowest, parent, visited, timer
+    prenum = [0 for i in range(n)]
+    lowest = [0 for i in range(n)]
+    parent = [-1 for i in range(n)]
     visited = [False for i in range(n)]
     timer = 1
     __dfs(0, -1, g)
@@ -96,6 +104,13 @@ def articulation_point(g: List[List[int]]) -> List[int]:
 
 
 def __dfs(current: int, prev: int, g: List[List[int]]) -> None:
+    """
+    Depth First Search For Graph Articulation Finder
+    :param current: Current Visit Node Index
+    :param prev: Previous Visit Node Index
+    :param g: Search Target Graph
+    :return:
+    """
     global prenum, lowest, parent, visited, timer
     prenum[current] = lowest[current] = timer
     timer += 1

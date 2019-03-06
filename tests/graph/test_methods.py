@@ -1,7 +1,7 @@
 import unittest
 from typing import List
 from graph.common import INFINITY
-from graph.methods import warshall_floyd, topological_sort
+from graph.methods import warshall_floyd, topological_sort, articulation_point
 
 
 class GraphMethodsTestCase(unittest.TestCase):
@@ -37,6 +37,12 @@ class GraphMethodsTestCase(unittest.TestCase):
         res: List[int] = topological_sort(adj_table)
         for i, id in enumerate([0, 3, 1, 4, 5, 2]):
             self.assertEqual(res[i], id)
+
+    def test_articulation_point_normal(self):
+        graph: List[List[int]] = [[1, 2], [0, 2], [0, 3], [2]]
+        res: List[int] = articulation_point(graph)
+        self.assertEqual(1, len(res))
+        self.assertEqual(2, res[0])
 
 
 if __name__ == '__main__':
