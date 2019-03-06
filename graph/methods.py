@@ -67,3 +67,18 @@ def __bfs(s: int, adj_matrix: List[List[int]], indeg: List[int], v: List[bool], 
             if indeg[i] == 0 and not v[i]:
                 v[i] = True
                 queue.append(i)
+
+prenum: List[int] = []
+lowest: List[int] = []
+parent: List[int] = []
+visited: List[bool] = []
+timer: int = 0
+def articulation_point(g: List[List[int]]) -> None:
+    n: int = len(g)
+    global visited
+    visited = [False for i in range(n)]
+    global timer
+    timer = 1
+
+
+def __dfs(cur: int, prev: int, g: List[List[int]]) -> None:
