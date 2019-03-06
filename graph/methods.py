@@ -68,17 +68,43 @@ def __bfs(s: int, adj_matrix: List[List[int]], indeg: List[int], v: List[bool], 
                 v[i] = True
                 queue.append(i)
 
+
 prenum: List[int] = []
 lowest: List[int] = []
 parent: List[int] = []
 visited: List[bool] = []
 timer: int = 0
-def articulation_point(g: List[List[int]]) -> None:
+
+
+def articulation_point(g: List[List[int]]) -> List[int]:
     n: int = len(g)
-    global visited
+    global visited, timer
     visited = [False for i in range(n)]
-    global timer
     timer = 1
+    __dfs(0, -1, g)
+    ap: List[int] = []
+    np: int = 0
+    for i in range(1, n):
+        p: int = parent[i]
+        if p == 0:
+            np += 1
+        elif prenum[p] <= lowest[i]:
+            ap.append(p)
+    if np > 1:
+        ap.append(0)
+    return ap
 
 
-def __dfs(cur: int, prev: int, g: List[List[int]]) -> None:
+def __dfs(current: int, prev: int, g: List[List[int]]) -> None:
+    global prenum, lowest, parent, visited, timer
+    prenum[current] = lowest[current] = timer
+    timer += 1
+    visited[current] = True
+
+    for next in g[current]:
+        if not visited[next]:
+            parent[next] = current
+            __dfs(next, current, g)
+            lowest[current] = min(lowest[current], lowest[next])
+        elif next != prev:
+            lowest[current] = min(lowest[current], prenum[next])
