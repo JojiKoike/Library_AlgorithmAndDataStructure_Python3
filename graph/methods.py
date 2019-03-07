@@ -1,6 +1,7 @@
 from typing import List, Optional, Deque
 from collections import deque
 from .common import INFINITY
+from .structs import Edge
 
 
 def warshall_floyd(distance_matrix: List[List[int]]) -> Optional[List[List[int]]]:
@@ -123,3 +124,47 @@ def __dfs(current: int, prev: int, g: List[List[int]]) -> None:
             lowest[current] = min(lowest[current], lowest[next])
         elif next != prev:
             lowest[current] = min(lowest[current], prenum[next])
+
+
+__visited: List[bool] = []
+__distances: List[int] = []
+__graph: List[List[Edge]] = []
+
+
+def calc_tree_diameter(graph: List[List[Edge]]) -> int:
+    """
+    Tree Diameter Calculator
+    :param graph:
+    :return:
+    """
+    global __graph
+    __graph = graph
+    __bfs_for_calc_tree_diameter(0)
+
+    maxv: int = max(filter(lambda d: d != INFINITY, __distances))
+    trgt: int = __distances.index(maxv)
+
+    __bfs_for_calc_tree_diameter(trgt)
+
+    return max(filter(lambda d: d != INFINITY, __distances))
+
+
+def __bfs_for_calc_tree_diameter(starting: int) -> None:
+    """
+    B.F.S For Tree Diameter Calculator
+    :param starting:
+    :return:
+    """
+    global __distances, __graph
+    __distances = [INFINITY for i in range(len(__graph))]
+    queue: Deque[int] = deque()
+    queue.append(starting)
+    __distances[starting] = 0
+    u: int = 0
+    while len(queue) > 0:
+        u = queue.popleft()
+        for i in range(len(__graph[u])):
+            e: Edge = __graph[u][i]
+            if __distances[e.destination] == INFINITY:
+                __distances[e.destination] = __distances[u] + e.weight
+                queue.append(e.destination)
