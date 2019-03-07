@@ -1,7 +1,8 @@
 import unittest
 from typing import List
 from graph.common import INFINITY
-from graph.methods import warshall_floyd, topological_sort, articulation_point
+from graph.methods import warshall_floyd, topological_sort, articulation_point, calc_tree_diameter
+from graph.structs import Edge
 
 
 class GraphMethodsTestCase(unittest.TestCase):
@@ -43,6 +44,14 @@ class GraphMethodsTestCase(unittest.TestCase):
         res: List[int] = articulation_point(graph)
         self.assertEqual(1, len(res))
         self.assertEqual(2, res[0])
+
+    def test_calc_tree_diameter_normal(self):
+        graph: List[List[Edge]] = [[Edge(1, 2)],
+                                   [Edge(0, 2), Edge(2, 1), Edge(3, 3)],
+                                   [Edge(1, 1)],
+                                   [Edge(1, 3)]]
+        res: int = calc_tree_diameter(graph)
+        self.assertEqual(5, res)
 
 
 if __name__ == '__main__':

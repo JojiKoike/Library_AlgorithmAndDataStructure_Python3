@@ -160,9 +160,8 @@ def __bfs_for_calc_tree_diameter(starting: int) -> None:
     queue: Deque[int] = deque()
     queue.append(starting)
     __distances[starting] = 0
-    u: int = 0
     while len(queue) > 0:
-        u = queue.popleft()
+        u: int = queue.popleft()
         for i in range(len(__graph[u])):
             e: Edge = __graph[u][i]
             if __distances[e.destination] == INFINITY:
