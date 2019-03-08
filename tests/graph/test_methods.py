@@ -1,7 +1,7 @@
 import unittest
 from typing import List
 from graph.common import INFINITY
-from graph.methods import warshall_floyd, topological_sort, articulation_point, calc_tree_diameter
+from graph.methods import warshall_floyd, topological_sort, articulation_point, calc_tree_diameter, kruskal
 from graph.structs import Edge
 
 
@@ -51,6 +51,16 @@ class GraphMethodsTestCase(unittest.TestCase):
                                    [Edge(None, 1, 1)],
                                    [Edge(None, 1, 3)]]
         res: int = calc_tree_diameter(graph)
+        self.assertEqual(5, res)
+
+    def test_kruskal_normal(self):
+        inputs: List[List[int]] = [[0, 1, 1], [0, 2, 3], [1, 2, 1],
+                                   [1, 3, 7], [2, 4, 1], [1, 4, 3],
+                                   [3, 4, 1], [3, 5, 1], [4, 5, 6]]
+        edges: List[Edge] = []
+        for inp in inputs:
+            edges.append(Edge(inp[0], inp[1], inp[2]))
+        res: int = kruskal(len(inputs), edges)
         self.assertEqual(5, res)
 
 

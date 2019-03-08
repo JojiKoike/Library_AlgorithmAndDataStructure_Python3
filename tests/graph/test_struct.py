@@ -14,7 +14,5 @@ class GraphStructsTestCase(unittest.TestCase):
             self.assertEqual(expects[i][2], edge.weight)
 
 
-
-
 if __name__ == '__main__':
     unittest.main()

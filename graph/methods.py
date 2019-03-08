@@ -2,6 +2,7 @@ from typing import List, Optional, Deque
 from collections import deque
 from .common import INFINITY
 from .structs import Edge
+from datastructure.structs import DisjointSet
 
 
 def warshall_floyd(distance_matrix: List[List[int]]) -> Optional[List[List[int]]]:
@@ -167,3 +168,14 @@ def __bfs_for_calc_tree_diameter(starting: int) -> None:
             if __distances[e.destination] == INFINITY:
                 __distances[e.destination] = __distances[u] + e.weight
                 queue.append(e.destination)
+
+
+def kruskal(n: int, edges: List[Edge]) -> int:
+    total_cost: int = 0
+    edges.sort()
+    dset: DisjointSet = DisjointSet(n)
+    for edge in edges:
+        if not dset.same(edge.source, edge.destination):
+            total_cost += edge.weight
+            dset.unite(edge.source, edge.destination)
+    return total_cost
