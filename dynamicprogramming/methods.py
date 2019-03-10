@@ -37,11 +37,11 @@ def zero_one_knapsack_problem(items: List[Item], weight: int) -> Tuple[int, List
     n: int = len(inner_items)
 
     # Initialize Tables
-    value_table: List[List[int]] = [[0 for j in range(n)] for i in range(n)]
-    selection_table: List[List[int]] = [[DIAGONAL if i == 0 else TOP for j in range(0)] for i in range(n)]
+    value_table: List[List[int]] = [[0 for j in range(weight + 1)] for i in range(n)]
+    selection_table: List[List[int]] = [[DIAGONAL if i == 0 else TOP for j in range(weight + 1)] for i in range(n)]
 
     # Solve
-    for i in range(1, n + 1):
+    for i in range(1, n):
         inner_item: Item = inner_items[i]
         for j in range(1, weight + 1):
             value_table[i][j] = value_table[i - 1][j]
@@ -55,10 +55,10 @@ def zero_one_knapsack_problem(items: List[Item], weight: int) -> Tuple[int, List
     # Return Results
     selection: Deque[int] = deque()
     w: int = weight
-    for i in range(n, 0, -1):
+    for i in range(n - 1, 0, -1):
         inner_item = inner_items[i]
         if selection_table[i][w] == DIAGONAL:
             selection.appendleft(i)
             w -= inner_item.weight
 
-    return value_table[n][weight], list(selection)
+    return value_table[n - 1][weight], list(selection)

@@ -9,5 +9,5 @@ class Item:
     """
     Item Data Structure
     """
-    weight: int
     value: int
+    weight: int
