@@ -1,8 +1,9 @@
 """
 Dynamic Programming Method Module
 """
-from typing import List, Optional, Tuple, Deque
+from typing import List, Tuple, Deque
 from collections import deque
+import bisect
 from .common import INFINITY, DIAGONAL, TOP
 from .structs import Item
 
@@ -62,3 +63,23 @@ def zero_one_knapsack_problem(items: List[Item], weight: int) -> Tuple[int, List
             w -= inner_item.weight
 
     return value_table[n - 1][weight], list(selection)
+
+
+def lis(a: List[int]) -> int:
+    """
+    Longest Increasing Subsequence Length Calculator
+    :param a:
+    :return: Length
+    """
+    n: int = len(a)
+    l: List[int] = [0 for i in range(n)]
+    l[0] = a[0]
+    length: int = 1
+    for i in range(1, n):
+        if l[length - 1] < a[i]:
+            l[length] = a[i]
+            length += 1
+        else:
+            l[bisect.bisect_left(l, a[i], 0, length - 1)] = a[i]
+
+    return length

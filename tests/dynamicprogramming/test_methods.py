@@ -1,6 +1,7 @@
 import unittest
 from typing import List
-from dynamicprogramming.methods import coin_changing_problem, zero_one_knapsack_problem
+from dynamicprogramming.methods import coin_changing_problem,\
+    zero_one_knapsack_problem, lis
 from dynamicprogramming.structs import Item
 
 
@@ -24,6 +25,9 @@ class DynamicProgrammingTestCase(unittest.TestCase):
         selections_expects: List[int] = [2, 4]
         for i, selections_expect in enumerate(selections_expects):
             self.assertEqual(selections_expect, selections[i])
+
+    def test_lis_normal(self):
+        self.assertEqual(3, lis([5, 1, 3, 2, 4]))
 
 
 if __name__ == '__main__':
