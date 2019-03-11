@@ -83,3 +83,26 @@ def lis(a: List[int]) -> int:
             l[bisect.bisect_left(l, a[i], 0, length - 1)] = a[i]
 
     return length
+
+
+def get_largest_square(g: List[List[int]]) -> int:
+    h: int = len(g)
+    w: int = len(g[0])
+    dp: List[List[int]] = [[0 for j in range(w)] for i in range(h)]
+    max_width: int = 0
+
+    for i in range(h):
+        for j in range(w):
+            if g[i][j] == 1:
+                dp[i][j] = (g[i][j] + 1) % 2
+                max_width |= dp[i][j]
+
+    for i in range(1, h):
+        for j in range(1, w):
+            if g[i][j] == 1:
+                dp[i][j] = 0
+            else:
+                dp[i][j] = min(dp[i - 1][j - 1], min(dp[i - 1][j], dp[i][j - 1])) + 1
+                max_width = max(max_width, dp[i][j])
+
+    return max_width * max_width
