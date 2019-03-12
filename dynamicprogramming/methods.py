@@ -135,11 +135,11 @@ def _get_largest_rectangle(t: List[int]) -> int:
         if len(stack) == 0:
             stack.append(rect)
         else:
-            if stack[len(stack) - 1].height < rect.height:
+            if stack[-1].height < rect.height:
                 stack.append(rect)
-            elif stack[len(stack) - 1].height > rect.height:
+            elif stack[-1].height > rect.height:
                 target: int = i
-                while len(stack) > 0 and stack[len(stack) - 1].height >= rect.height:
+                while len(stack) > 0 and stack[-1].height >= rect.height:
                     pre_rect: Rectangle = stack.pop()
                     area: int = pre_rect.height * (i - pre_rect.pos)
                     max_v = max(max_v, area)
