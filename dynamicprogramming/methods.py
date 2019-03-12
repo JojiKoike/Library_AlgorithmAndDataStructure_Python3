@@ -5,7 +5,7 @@ from typing import List, Tuple, Deque
 from collections import deque
 import bisect
 from .common import INFINITY, DIAGONAL, TOP
-from .structs import Item
+from .structs import Item, Rectangle
 
 
 def coin_changing_problem(coins: List[int], n: int) -> int:
@@ -106,3 +106,44 @@ def get_largest_square(g: List[List[int]]) -> int:
                 max_width = max(max_width, dp[i][j])
 
     return max_width * max_width
+
+
+def get_largest_rectangle(g: List[List[int]]) -> int:
+    h: int = len(g)
+    w: int = len(g[0])
+    t: List[List[int]] = [[0 for j in range(w)] for i in range(h)]
+
+    for j in range(w):
+        for i in range(h):
+            if g[i][j] == 1:
+                t[i][j] = 0
+            else:
+                t[i][j] = t[i - 1][j] + 1 if i > 0 else 1
+
+    max_reactangle: int = 0
+    for i in range(h):
+        max_reactangle = max(max_reactangle, _get_largest_rectangle(t[i]))
+
+    return max_reactangle
+
+
+def _get_largest_rectangle(t: List[int]) -> int:
+    stack: List[Rectangle] = []
+    max_v: int = 0
+    for i in range(len(t)):
+        rect: Rectangle = Rectangle(t[i], i)
+        if len(stack) == 0:
+            stack.append(rect)
+        else:
+            if stack[len(stack) - 1].height < rect.height:
+                stack.append(rect)
+            elif stack[len(stack) - 1].height > rect.height:
+                target: int = i
+                while len(stack) > 0 and stack[len(stack) - 1].height >= rect.height:
+                    pre_rect: Rectangle = stack.pop()
+                    area: int = pre_rect.height * (i - pre_rect.pos)
+                    max_v = max(max_v, area)
+                    target = pre_rect.pos
+                rect.pos = target
+                stack.append(rect)
+    return max_v

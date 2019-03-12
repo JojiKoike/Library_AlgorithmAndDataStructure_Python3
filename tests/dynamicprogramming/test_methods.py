@@ -1,7 +1,7 @@
 import unittest
 from typing import List
 from dynamicprogramming.methods import coin_changing_problem,\
-    zero_one_knapsack_problem, lis, get_largest_square
+    zero_one_knapsack_problem, lis, get_largest_square, get_largest_rectangle
 from dynamicprogramming.structs import Item
 
 
@@ -36,6 +36,13 @@ class DynamicProgrammingTestCase(unittest.TestCase):
                               [0, 0, 0, 1, 0]]
         res: int = get_largest_square(g)
         self.assertEqual(4, res)
+
+    def test_get_largest_rectangle_normal(self):
+        g: List[List[int]] = [[0, 0, 1, 0, 1],
+                              [1, 0, 0, 0, 0],
+                              [0, 0, 0, 1, 0],
+                              [0, 0, 0, 1, 0]]
+        self.assertEqual(6, get_largest_rectangle(g))
 
 
 if __name__ == '__main__':
