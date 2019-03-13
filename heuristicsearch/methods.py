@@ -1,9 +1,12 @@
 """
 Heuristic Search Methods Module
 """
-from typing import List, Optional
-from .common import N_EIGHT, FREE, NOT_FREE
-from .structs import Queen
+from typing import List, Deque, Dict
+from collections import deque
+import copy
+from .common import N_EIGHT, FREE, \
+    NOT_FREE, N_EIGHT_PUZZLE, N2_EIGHT_PUZZLE, dx, dy, dir
+from .structs import Queen, Puzzle
 
 x: List[List[bool]] = []
 row: List[int] = []
@@ -65,3 +68,48 @@ def __print_board() -> None:
     for i in range(N_EIGHT):
         for j in range(N_EIGHT):
             res[i][j] = 'Q' if row[i] == j else '.'
+
+
+def eight_puzzle_solver(data: List[int]) -> int:
+    space: int = data.index(0)
+    data[space] = N2_EIGHT_PUZZLE
+    puzzle: Puzzle = Puzzle(data, space, '')
+    res: str = _eight_puzzle_bfs(puzzle)
+    return len(res)
+
+
+def _eight_puzzle_bfs(puzzle: Puzzle) -> str:
+    q: Deque[Puzzle] = deque()
+    p_map: Dict[Puzzle, bool] = {}
+    puzzle.path = ""
+    q.append(puzzle)
+    p_map[puzzle] = True
+
+    while len(q) > 0:
+        u: Puzzle = q.popleft()
+        if __is_target(u):
+            return u.path
+        sx: int = int(u.space / N_EIGHT_PUZZLE)
+        sy: int = u.space % N_EIGHT_PUZZLE
+        for r in range(4):
+            tx: int = sx + dx[r]
+            ty: int = sy + dy[r]
+            if tx < 0 or ty < 0 or \
+                    tx >= N_EIGHT_PUZZLE or ty >= N_EIGHT_PUZZLE:
+                continue
+            v: Puzzle = copy.deepcopy(u)
+            v.f[u.space], v.f[tx * N_EIGHT_PUZZLE + ty] \
+                = v.f[tx * N_EIGHT_PUZZLE + ty], v.f[u.space]
+            v.space = tx * N_EIGHT_PUZZLE + ty
+            if v not in p_map:
+                p_map[v] = True
+                v.path += dir[r]
+                q.append(v)
+    return "unsolvable"
+
+
+def __is_target(puzzle: Puzzle) -> bool:
+    for i in range(N2_EIGHT_PUZZLE):
+        if puzzle.f[i] != i + 1:
+            return False
+    return True
