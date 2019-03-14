@@ -5,8 +5,9 @@ from typing import List, Deque, Dict
 from collections import deque
 import copy
 from .common import N_EIGHT, FREE, \
-    NOT_FREE, N_EIGHT_PUZZLE, N2_EIGHT_PUZZLE, dx, dy, dir
-from .structs import Queen, Puzzle
+    NOT_FREE, N_EIGHT_PUZZLE, N2_EIGHT_PUZZLE, \
+    dx, dy, dir, N_16_PUZZLE, N2_16_PUZZLE, LIMIT
+from .structs import Queen, Puzzle, Puzzle2
 
 x: List[List[bool]] = []
 row: List[int] = []
@@ -111,5 +112,86 @@ def _eight_puzzle_bfs(puzzle: Puzzle) -> str:
 def __is_target(puzzle: Puzzle) -> bool:
     for i in range(N2_EIGHT_PUZZLE):
         if puzzle.f[i] != i + 1:
+            return False
+    return True
+
+
+mdt: List[List[int]] = [[0 for j in range(N2_16_PUZZLE)] for i in range(N2_16_PUZZLE)]
+limit: int = 0
+state: Puzzle2
+path: List[int] = [0 for i in range(LIMIT)]
+
+
+def sixteen_puzzle_solver_ida_star(data: List[int]) -> int:
+    global mdt
+    # Build Manhattan Distance Table
+    for i in range(N2_16_PUZZLE):
+        for j in range(N2_16_PUZZLE):
+            mdt[i][j] = abs(int(i / N_16_PUZZLE) - int(j / N_16_PUZZLE)) \
+                        + abs(i % N_16_PUZZLE - j % N_16_PUZZLE)
+    space: int = data.index(0)
+    data[space] = N2_16_PUZZLE
+    puzzle: Puzzle2 = Puzzle2(data, space, 0)
+    ans: str = __iterative_deeping(puzzle)
+    return len(ans)
+
+
+def __iterative_deeping(puzzle: Puzzle2) -> str:
+    puzzle.MD = __get_all_md(puzzle)
+    global limit, state, path
+    limit = puzzle.MD
+    while limit <= LIMIT:
+        state = copy.deepcopy(puzzle)
+        if __dfs(0, -100):
+            ans: str = ""
+            for i in range(limit):
+                ans += dir[path[i]]
+            return ans
+        limit += 1
+    return "unsolvable"
+
+def __get_all_md(puzzle: Puzzle2) -> int:
+    global mdt
+    sum: int = 0
+    for i in range(N2_16_PUZZLE):
+        if puzzle.f[i] == N2_16_PUZZLE:
+            continue
+        sum += mdt[i][puzzle.f[i] - 1]
+    return sum
+
+
+def __dfs(depth: int, prev: int) -> bool:
+    global state, limit
+    if state.MD == 0:
+        return True
+    if depth + state.MD > limit:
+        return False
+    sx: int = int(state.space / N_16_PUZZLE)
+    sy: int = state.space % N_16_PUZZLE
+    tmp: Puzzle2
+    for r in range(4):
+        tx: int = sx + dx[r]
+        ty: int = sy + dy[r]
+        if tx < 0 or ty < 0 or tx >= N_16_PUZZLE or ty >= N_16_PUZZLE:
+            continue
+        if max(prev, r) - min(prev, r) == 2:
+            continue
+        tmp = copy.deepcopy(state)
+        state.MD -= mdt[tx * N_16_PUZZLE + ty][state.f[tx * N_16_PUZZLE + ty] - 1]
+        state.MD += mdt[sx * N_16_PUZZLE + sy][state.f[tx * N_16_PUZZLE + ty] - 1]
+        state.f[tx * N_16_PUZZLE + ty], state.f[sx * N_16_PUZZLE + sy] = \
+            state.f[sx * N_16_PUZZLE + sy], state.f[tx * N_16_PUZZLE + ty]
+        state.space = tx * N_16_PUZZLE + ty
+        if __dfs(depth + 1, r):
+            path[depth] = r
+            return True
+        state = tmp
+    return False
+
+
+
+def __is_solved():
+    for i in range(N2_16_PUZZLE):
+        if state.f[i] != i + 1:
             return False
     return True

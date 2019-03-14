@@ -26,3 +26,11 @@ class Puzzle:
             return self.f[i] > other.f[i]
         return False
 
+
+@dataclass
+class Puzzle2:
+    f: List[int]
+    space: int
+    MD: int
+
+
