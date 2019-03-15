@@ -1,13 +1,14 @@
 """
 Heuristic Search Methods Module
 """
-from typing import List, Deque, Dict
+from typing import List, Deque, Dict, Union
 from collections import deque
 import copy
+import heapq
 from .common import N_EIGHT, FREE, \
     NOT_FREE, N_EIGHT_PUZZLE, N2_EIGHT_PUZZLE, \
     dx, dy, dir, N_16_PUZZLE, N2_16_PUZZLE, LIMIT
-from .structs import Queen, Puzzle, Puzzle2
+from .structs import Queen, Puzzle, Puzzle2, Puzzle3, State
 
 x: List[List[bool]] = []
 row: List[int] = []
@@ -151,7 +152,7 @@ def __iterative_deeping(puzzle: Puzzle2) -> str:
     return "unsolvable"
 
 
-def __get_all_md(puzzle: Puzzle2) -> int:
+def __get_all_md(puzzle: Union[Puzzle2, Puzzle3]) -> int:
     global mdt
     sum: int = 0
     for i in range(N2_16_PUZZLE):
@@ -195,3 +196,54 @@ def __is_solved():
         if state.f[i] != i + 1:
             return False
     return True
+
+
+def sixteen_puzzle_solver_a_star(data: List[int]) -> int:
+    global mdt
+    for i in range(N2_16_PUZZLE):
+        for j in range(N2_16_PUZZLE):
+            mdt[i][j] = abs(int(i / N_16_PUZZLE) - int(j / N_16_PUZZLE)) +\
+                        abs(i % N_16_PUZZLE - j % N_16_PUZZLE)
+    space: int = data.index(0)
+    data[space] = N2_16_PUZZLE
+    puzzle: Puzzle3 = Puzzle3(data, space, 0, 0)
+    return __aster(puzzle)
+
+
+def __aster(puzzle: Puzzle3) -> int:
+    pq: List[State] = []
+    md: int = __get_all_md(puzzle)
+    puzzle.MD = md
+    pmap: Dict[Puzzle3, bool] = {}
+    initial: State = State(puzzle, md)
+    heapq.heappush(pq, initial)
+
+    counter: int = 0
+    while len(pq) > 0:
+        counter += 1
+        print(counter)
+        st: State = heapq.heappop(pq)
+        u: Puzzle3 = copy.deepcopy(st.puzzle)
+        if u.MD == 0:
+            return u.cost
+        pmap[u] = True
+
+        sx: int = int(u.space / N_16_PUZZLE)
+        sy: int = u.space % N_16_PUZZLE
+
+        for r in range(4):
+            tx: int = sx + dx[r]
+            ty: int = sy + dy[r]
+            if tx < 0 or ty < 0 or tx >= N_16_PUZZLE or ty >= N_16_PUZZLE:
+                continue
+            v: Puzzle3 = copy.deepcopy(u)
+            v.MD -= mdt[tx * N_16_PUZZLE + ty][v.f[tx * N_16_PUZZLE + ty] - 1]
+            v.MD += mdt[sx * N_16_PUZZLE + sy][v.f[tx * N_16_PUZZLE + ty] - 1]
+            v.f[tx * N_16_PUZZLE + ty], v.f[sx * N_16_PUZZLE + sy] = \
+                v.f[sx * N_16_PUZZLE + sy], v.f[tx * N_16_PUZZLE + ty]
+            v.space = tx * N_16_PUZZLE + ty
+            if v not in pmap:
+                v.cost += 1
+                news: State = State(v, v.cost + v.MD)
+                heapq.heappush(pq, news)
+    return -1
