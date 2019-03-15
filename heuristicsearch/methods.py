@@ -150,6 +150,7 @@ def __iterative_deeping(puzzle: Puzzle2) -> str:
         limit += 1
     return "unsolvable"
 
+
 def __get_all_md(puzzle: Puzzle2) -> int:
     global mdt
     sum: int = 0
@@ -187,7 +188,6 @@ def __dfs(depth: int, prev: int) -> bool:
             return True
         state = tmp
     return False
-
 
 
 def __is_solved():
